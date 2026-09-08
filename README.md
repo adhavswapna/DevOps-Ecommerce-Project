@@ -1,469 +1,322 @@
-# 🛒 Ecommerce Microservices Platform
+# 🛒 Production-Grade E-Commerce Platform
 
+### Cloud-Native Microservices • Kubernetes • GitOps • DevSecOps • Observability
 
-Copyright © 2026 Swapna Adhav. All Rights Reserved.
+A production-oriented e-commerce platform built with **microservices, Docker, Kubernetes, Terraform, GitHub Actions, Argo CD, Cilium, OpenTelemetry, and modern DevSecOps practices**.
 
+This project takes an existing e-commerce application and progressively transforms it into a secure, observable, scalable, reliable, and GitOps-driven platform.
 
-
-
-A **microservices-based ecommerce platform** designed to provide a complete online shopping experience with separate applications for customers, vendors, and administrators.
-
-The platform supports product browsing, shopping carts, orders, payments, inventory, reviews, invoices, shipping, refunds, notifications, and vendor management.
-
-The backend is organized into independent services, with each service responsible for a specific business capability.
+> **Goal:** Demonstrate the complete lifecycle of a production application — development, testing, security, containerization, deployment, observability, scaling, and disaster recovery.
 
 ---
 
-## 🚀 Project Overview
+# 🚀 Project Highlights
 
-The platform provides separate interfaces for three types of users:
-
-### 🛍️ Customers
-
-Customers can:
-
-* Register and login
-* Browse products
-* Search products
-* View product details
-* Manage shopping carts
-* Checkout
-* Make payments
-* Place and manage orders
-* Track shipments
-* Download invoices
-* Submit product ratings and reviews
-* Manage their profile
-
-### 🏪 Vendors
-
-Vendors can:
-
-* Register with username/email and password
-* Login to the vendor application
-* Check vendor approval status
-* Access the vendor dashboard after approval
-* Create products
-* Update products
-* Manage their products
-* Manage inventory
-* View orders
-* View vendor analytics
-
-A vendor must be **approved by an administrator before creating products**.
-
-### 👨‍💼 Administrators
-
-Administrators can:
-
-* Login to the admin dashboard
-* View vendor registrations
-* Review vendor applications
-* Approve vendors
-* Reject vendors
-* Manage users
-* Manage products
-* Manage orders
-* View analytics
-* Perform platform administration
-
----
-
-# 🏪 Vendor Registration & Approval Workflow
-
-Vendor onboarding follows an admin approval process.
-
-```text
-                 Vendor
-                   │
-                   ▼
-          Vendor Registration
-                   │
-          Username + Password
-                   │
-                   ▼
-                PENDING
-                   │
-                   ▼
-          Admin Reviews Vendor
-              /           \
-             /             \
-            ▼               ▼
-        APPROVED         REJECTED
-            │               │
-            ▼               ▼
-      Vendor Login      Access Restricted
-            │
-            ▼
-     Vendor Dashboard
-            │
-            ▼
-      Create Product
-```
-
-### 1. Vendor Registration
-
-The vendor registers through the Vendor Dashboard.
-
-```text
-http://localhost:5173
-```
-
-The registration form includes:
-
-```text
-Username
-Email
-Password
-Confirm Password
-```
-
-After registration, the vendor account is created with:
-
-```text
-status = PENDING
-```
-
-The vendor cannot create products while the account is pending.
-
----
-
-### 2. Admin Review
-
-The administrator logs into the Admin Dashboard:
-
-```text
-http://localhost:5174
-```
-
-The admin can view pending vendor applications.
-
-Example:
-
-| Vendor     | Email                                       | Status   | Action           |
-| ---------- | ------------------------------------------- | -------- | ---------------- |
-| ABC Store  | [abc@example.com](mailto:abc@example.com)   | PENDING  | Approve / Reject |
-| XYZ Store  | [xyz@example.com](mailto:xyz@example.com)   | APPROVED | —                |
-| Demo Store | [demo@example.com](mailto:demo@example.com) | REJECTED | —                |
-
----
-
-### 3. Vendor Approval
-
-If the administrator approves the application:
-
-```text
-PENDING
-   │
-   ▼
-APPROVED
-```
-
-The vendor can then log in and access vendor functionality.
-
----
-
-### 4. Vendor Rejection
-
-If the administrator rejects the application:
-
-```text
-PENDING
-   │
-   ▼
-REJECTED
-```
-
-The vendor cannot access protected vendor operations such as product creation.
-
----
-
-# 📦 Product Creation Workflow
-
-Only an **approved vendor** can create products.
-
-```text
-Approved Vendor
-      │
-      ▼
-Vendor Login
-      │
-      ▼
-Vendor Dashboard
-      │
-      ▼
-Add Product
-      │
-      ▼
-API Gateway
-      │
-      ▼
-Product Service
-      │
-      ▼
-PostgreSQL
-```
-
-A product contains information such as:
-
-```text
-Product Name
-Description
-Price
-Stock
-Category
-Images
-Vendor ID
-```
-
-Each product is associated with the vendor who created it.
-
-```text
-Product
-├── id
-├── vendorId
-├── name
-├── description
-├── price
-├── stock
-├── category
-└── images
-```
-
----
-
-# 🛡️ Vendor Authorization
-
-Vendor authentication and vendor approval are separate checks.
-
-For protected vendor operations, the backend verifies:
-
-```text
-JWT Valid?
-    │
-    ▼
-Role = VENDOR?
-    │
-    ▼
-Vendor Exists?
-    │
-    ▼
-Vendor Status = APPROVED?
-    │
-    ▼
-Allow Vendor Operation
-```
-
-For example, creating a product requires:
-
-```text
-Authenticated = YES
-Role = VENDOR
-Vendor Status = APPROVED
-```
-
-The approval check is performed on the **backend** so that a pending or rejected vendor cannot bypass the frontend and directly call the product API.
+* 🧩 Microservices-based e-commerce architecture
+* 🖥️ Next.js customer storefront
+* 👨‍💼 Admin dashboard
+* 🏪 Vendor dashboard
+* 🐳 Docker + BuildKit
+* ☸️ Kubernetes 1.37.x
+* 🧪 kind local Kubernetes cluster
+* 🌐 Nginx API Gateway
+* 🔀 Kubernetes Gateway API
+* 🛡️ Cilium CNI
+* 🔎 Hubble network observability
+* 📦 Helm
+* 🏗️ Terraform
+* 🔐 Checkov
+* 🔄 GitHub Actions
+* 📦 GitHub Container Registry
+* 🚀 Argo CD GitOps
+* 🔄 Argo Rollouts
+* 🔍 Trivy
+* 📋 Syft SBOM
+* ✍️ Cosign image signing
+* 🛡️ Kyverno
+* 🔬 Tetragon
+* 🔑 External Secrets Operator
+* 🔒 cert-manager
+* 📊 OpenTelemetry
+* ⚙️ Grafana Alloy
+* 📈 Prometheus
+* 📝 Loki
+* 🔭 Tempo
+* 📊 Grafana
+* 🚨 Alertmanager
+* 📈 HPA
+* ⚡ KEDA
+* 💾 Velero
+* 🧪 Jest/Vitest
+* 🧪 Supertest
+* 🎭 Playwright
+* ⚡ k6
 
 ---
 
 # 🏗️ High-Level Architecture
 
 ```text
-                         ┌───────────────────────┐
-                         │    Customer Browser   │
-                         └───────────┬───────────┘
-                                     │
-                         ┌───────────▼───────────┐
-                         │   Storefront :3000    │
-                         │       Next.js         │
-                         └───────────┬───────────┘
-                                     │
-                                     │ REST API
-                                     ▼
-                         ┌───────────────────────┐
-                         │    Nginx API Gateway  │
-                         │       :8081           │
-                         └───────────┬───────────┘
-                                     │
-          ┌──────────────────────────┼──────────────────────────┐
-          │                          │                          │
-          ▼                          ▼                          ▼
-   Auth / User Services       Product Services          Order Services
-          │                          │                          │
-          └──────────────────────────┼──────────────────────────┘
-                                     │
-                           ┌─────────▼─────────┐
-                           │  Kafka / Redis    │
-                           └─────────┬─────────┘
-                                     │
-              ┌──────────────────────┼──────────────────────┐
-              │                      │                      │
-              ▼                      ▼                      ▼
-          PostgreSQL              MinIO              Other Services
-       Service Databases       Object Storage       Payment / Shipping
+                              USERS
+                                │
+                                ▼
+                    ┌─────────────────────┐
+                    │       NGINX         │
+                    │     API Gateway     │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │    Gateway API      │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │       CILIUM        │
+                    │    Network Layer    │
+                    └──────────┬──────────┘
+                               │
+          ┌────────────────────┼────────────────────┐
+          │                    │                    │
+          ▼                    ▼                    ▼
+   ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+   │ Auth        │      │ Product     │      │ Order       │
+   │ Service     │      │ Service     │      │ Service     │
+   └──────┬──────┘      └──────┬──────┘      └──────┬──────┘
+          │                    │                    │
+          └────────────────────┼────────────────────┘
+                               │
+              ┌────────────────┼────────────────┐
+              │                │                │
+              ▼                ▼                ▼
+        PostgreSQL           Redis            Kafka
+                                                  │
+                                                  ▼
+                                           Notification
+                                              Service
+
+                               │
+                               ▼
+                             MinIO
+
+
+       ┌────────────────────────────────────────────────────┐
+       │                   OBSERVABILITY                     │
+       │                                                    │
+       │ Applications → OpenTelemetry → Grafana Alloy       │
+       │                              │                     │
+       │                 ┌────────────┼────────────┐        │
+       │                 ▼            ▼            ▼        │
+       │            Prometheus      Loki         Tempo      │
+       │                 │            │            │        │
+       │                 └────────────┼────────────┘        │
+       │                              ▼                     │
+       │                           Grafana                  │
+       │                              │                     │
+       │                         Alertmanager               │
+       └────────────────────────────────────────────────────┘
+
+
+       ┌────────────────────────────────────────────────────┐
+       │                    SECURITY                        │
+       │                                                    │
+       │ CodeQL • Dependabot • Secret Scanning              │
+       │ SonarQube • Trivy • Checkov • Syft • Cosign         │
+       │ Kyverno • Tetragon • RBAC • NetworkPolicy          │
+       │ cert-manager • External Secrets                    │
+       └────────────────────────────────────────────────────┘
 ```
 
 ---
 
-# 📂 Project Structure
+# 🧩 Application Architecture
+
+The existing e-commerce application consists of multiple services.
+
+Typical backend services include:
 
 ```text
-Ecommerce-Project/
-│
-├── README.md
-│
-├── docker-compose.yml
-├── docker-compose.gateway.yml
-│
-├── ecommerce-backend/
-│   ├── auth-service/
-│   ├── admin-service/
-│   ├── product-service/
-│   ├── email-service/
-│   ├── cart-service/
-│   ├── order-service/
-│   ├── payment-service/
-│   ├── rating-service/
-│   ├── inventory-service/
-│   ├── invoice-service/
-│   ├── analytics-service/
-│   ├── vendor-service/
-│   ├── search-service/
-│   ├── shipping-service/
-│   ├── user-service/
-│   ├── refund-service/
-│   ├── notification-service/
-│   │
-│   ├── apps/
-│   └── scripts/
-│
-├── ecommerce-frontend/
-│   ├── storefront/
-│   ├── admin-dashboard/
-│   └── vendor-dashboard/
-│
-└── nginx/
-    └── nginx.conf
+services/
+├── auth-service
+├── user-service
+├── product-service
+├── cart-service
+├── order-service
+├── payment-service
+├── rating-service
+├── inventory-service
+├── invoice-service
+├── notification-service
+└── ...
 ```
 
----
+Frontend applications:
 
-# 🧩 Backend Microservices
+```text
+frontend/
+admin-dashboard/
+vendor-dashboard/
+```
 
-The backend is divided into independent services, each responsible for a specific business capability.
-
-| Service                  | Responsibility                               |
-| ------------------------ | -------------------------------------------- |
-| **Auth Service**         | Authentication, JWT and Google OAuth         |
-| **User Service**         | Customer/user management                     |
-| **Admin Service**        | Administrative operations                    |
-| **Product Service**      | Product catalog and product management       |
-| **Cart Service**         | Shopping cart management                     |
-| **Order Service**        | Order creation and order lifecycle           |
-| **Payment Service**      | Payment processing                           |
-| **Rating Service**       | Product reviews and ratings                  |
-| **Inventory Service**    | Stock and inventory management               |
-| **Invoice Service**      | Invoice generation and storage               |
-| **Analytics Service**    | Ecommerce analytics and reporting            |
-| **Vendor Service**       | Vendor registration, approval and management |
-| **Search Service**       | Product search functionality                 |
-| **Shipping Service**     | Shipping and order tracking                  |
-| **Refund Service**       | Refund processing                            |
-| **Email Service**        | Email notifications                          |
-| **Notification Service** | Application notifications                    |
+The exact service structure will remain aligned with the existing application.
 
 ---
 
-# 🖥️ Frontend Applications
+# 🖥️ Frontend
 
-The project contains three separate frontend applications.
+## Customer Storefront
 
-## 🛍️ Storefront
+Technology:
 
-Customer-facing ecommerce application built with **Next.js**.
+* Next.js
+* React
+* TypeScript
+* App Router
 
-Responsibilities include:
+Features include:
 
+* User registration/login
 * Product browsing
-* Product search
 * Product details
+* Product images
 * Shopping cart
 * Checkout
-* Payments
-* Order management
-* Invoice downloads
-* Reviews and ratings
-* Shipping tracking
-
-**URL:**
-
-```text
-http://localhost:3000
-```
+* Orders
+* User account
 
 ---
 
-## 🏪 Vendor Dashboard
+# 👨‍💼 Admin Dashboard
 
-Vendor-facing application for registration, authentication, product management, inventory, and vendor operations.
+Technology:
+
+* React
+* Vite
+* React Router
 
 Responsibilities include:
 
-* Vendor registration
-* Vendor login
-* Approval status
-* Vendor dashboard
-* Product creation
+* Vendor management
 * Product management
-* Inventory management
+* Order management
+* Platform administration
+* Administrative workflows
+
+---
+
+# 🏪 Vendor Dashboard
+
+Technology:
+
+* React
+* Vite
+* TypeScript
+
+Responsibilities include:
+
+* Vendor authentication
+* Product management
 * Order management
 * Vendor analytics
-
-**URL:**
-
-```text
-http://localhost:5173
-```
-
-A vendor can create products **only after the admin approves the vendor account**.
+* Inventory-related operations
 
 ---
 
-## 👨‍💼 Admin Dashboard
+# ⚙️ Backend
 
-Administrative application for managing the ecommerce platform.
+Backend services use:
 
-Responsibilities include:
+* Node.js
+* Express
+* TypeScript
+* Prisma
+* PostgreSQL
+* Redis
+* Apache Kafka
 
-* Admin login
-* Vendor registration management
-* Vendor approval
-* Vendor rejection
-* User management
-* Product management
-* Order management
-* Analytics
-* Platform administration
+Communication uses:
 
-**URL:**
-
-```text
-http://localhost:5174
-```
+* REST APIs
+* Kafka asynchronous events
+* WebSockets where required
 
 ---
 
-# 🌐 Nginx API Gateway
+# 🌐 API Gateway
 
-Nginx acts as the centralized **API Gateway** for the backend services.
+The project uses **Nginx** as the API Gateway.
 
-Frontend applications communicate with:
+Nginx handles:
+
+* Reverse proxy
+* Request routing
+* CORS
+* TLS termination
+* Rate limiting
+* Security headers
+* Request size limits
+* Timeouts
+* WebSocket proxying
+* Access logging
+* Upstream load balancing
+
+### Why Nginx?
+
+Nginx is already part of the application architecture and is a mature, production-proven gateway.
+
+There is no unnecessary replacement with another ingress/gateway technology.
+
+---
+
+# ☸️ Kubernetes
+
+The application is deployed on:
+
+**Kubernetes 1.37.x**
+
+Local Kubernetes development uses:
+
+**kind**
 
 ```text
-http://localhost:8081/api
+Docker
+   │
+   ▼
+ kind
+   │
+   ▼
+Kubernetes
+   │
+   ├── Nginx
+   ├── Cilium
+   ├── Application Services
+   ├── PostgreSQL
+   ├── Redis
+   ├── Kafka
+   └── MinIO
 ```
 
-instead of directly accessing individual microservices.
+The local Kubernetes environment is designed to model production practices without requiring an AWS environment during development.
+
+---
+
+# 🌐 Kubernetes Networking
+
+## Cilium
+
+Cilium provides:
+
+* Kubernetes CNI
+* NetworkPolicy
+* Service networking
+* Network visibility
+* Runtime security integration
+
+---
+
+## Hubble
+
+Hubble provides visibility into Kubernetes network communication.
 
 Example:
 
@@ -471,337 +324,1830 @@ Example:
 Frontend
    │
    ▼
-http://localhost:8081/api/products
-   │
-   ▼
 Nginx
    │
    ▼
-Product Service :3003
+Order Service
+   │
+   ├── Payment Service
+   │
+   ├── Inventory Service
+   │
+   └── Kafka
+          │
+          ▼
+    Notification Service
 ```
 
-The gateway provides:
-
-* Centralized API routing
-* Reverse proxying
-* Authorization header forwarding
-* CORS handling
-* Request forwarding
-* Upload size configuration
-* Service health endpoints
+This allows service-to-service communication to be inspected and troubleshot.
 
 ---
 
-# 🐳 Application Infrastructure
+# 📦 Helm
 
-The application uses Docker Compose for local infrastructure components.
+Helm is used for Kubernetes application packaging.
 
-The main infrastructure includes:
-
-* PostgreSQL
-* Apache Kafka
-* Zookeeper
-* Redis
-* MinIO
-
-Docker Compose configuration:
+Example:
 
 ```text
-docker-compose.yml
-docker-compose.gateway.yml
-```
-
----
-
-# 🗄️ Database Architecture
-
-Each major microservice maintains its own PostgreSQL database.
-
-```text
-PostgreSQL
+helm/
+├── ecommerce/
+│   ├── Chart.yaml
+│   ├── values.yaml
+│   └── templates/
 │
-├── auth_db
-├── admin_db
-├── product_db
-├── email_db
-├── cart_db
-├── order_db
-├── payment_db
-├── rating_db
-├── inventory_db
-├── invoice_db
-├── analytics_db
-├── vendor_db
-├── search_db
-├── shipping_db
-├── user_db
-├── refund_db
-└── notification_db
+├── auth/
+├── user/
+├── product/
+├── cart/
+├── order/
+├── payment/
+└── ...
 ```
 
-This separation helps maintain service boundaries and follows the microservices principle of **database ownership by service**.
+Helm manages application deployment templates and configuration.
 
 ---
 
-# 📨 Event-Driven Communication
+# 🏗️ Infrastructure as Code
 
-Apache Kafka is used for asynchronous communication between microservices.
+Infrastructure and platform configuration use:
 
-For example:
+**Terraform**
+
+Terraform workflow:
 
 ```text
+Terraform
+   │
+   ├── terraform fmt
+   ├── terraform validate
+   ├── terraform plan
+   └── Checkov
+```
+
+Terraform is used for infrastructure/platform concerns.
+
+Application deployment is handled separately through:
+
+```text
+Helm + Argo CD
+```
+
+This keeps infrastructure provisioning and application reconciliation properly separated.
+
+---
+
+# 🔄 CI/CD
+
+The project uses:
+
+**GitHub Actions**
+
+Pipeline:
+
+```text
+Developer
+    │
+    ▼
+Git Push / Pull Request
+    │
+    ▼
+GitHub Actions
+    │
+    ├── Lint
+    ├── Unit Tests
+    ├── Integration Tests
+    ├── TypeScript
+    ├── CodeQL
+    ├── SonarQube
+    ├── Checkov
+    ├── Trivy
+    ├── Helm Lint
+    └── kubeconform
+             │
+             ▼
+       Docker BuildKit
+             │
+             ├── Trivy
+             ├── Syft
+             └── Cosign
+             │
+             ▼
+            GHCR
+```
+
+---
+
+# 🔐 DevSecOps
+
+Security is integrated into the CI/CD lifecycle.
+
+```text
+Source Code
+     │
+     ├── Secret Scanning
+     ├── Dependabot
+     └── CodeQL
+     │
+     ▼
+SonarQube
+     │
+     ▼
+Checkov
+     │
+     ▼
+Trivy
+     │
+     ▼
+Docker Build
+     │
+     ├── Syft → SBOM
+     │
+     └── Cosign → Signature
+     │
+     ▼
+GHCR
+     │
+     ▼
+Kyverno
+     │
+     ▼
+Kubernetes
+```
+
+---
+
+# 🔍 Trivy
+
+Trivy is used to scan:
+
+* Container images
+* Filesystems
+* Dependencies
+* Kubernetes manifests
+* Configuration
+* IaC where applicable
+
+Security vulnerabilities are detected before deployment.
+
+---
+
+# 📋 SBOM
+
+**Syft** generates Software Bills of Materials.
+
+```text
+Container Image
+       │
+       ▼
+      Syft
+       │
+       ▼
+      SBOM
+```
+
+SBOM provides visibility into the software components contained within application images.
+
+---
+
+# ✍️ Container Image Signing
+
+Container images are signed with **Cosign**.
+
+```text
+Build Image
+    │
+    ▼
+Generate SBOM
+    │
+    ▼
+Cosign Sign
+    │
+    ▼
+GHCR
+    │
+    ▼
+Kyverno Verification
+    │
+    ▼
+Kubernetes
+```
+
+This provides a stronger software supply-chain security model.
+
+---
+
+# 🛡️ Kubernetes Security
+
+## Kyverno
+
+Kyverno provides Kubernetes policy enforcement.
+
+Example policies:
+
+```text
+❌ No privileged containers
+❌ No root containers
+❌ No latest image tags
+❌ No missing resource limits
+❌ No unapproved registries
+❌ No insecure securityContext
+```
+
+---
+
+## Tetragon
+
+Tetragon provides runtime security and visibility.
+
+It can observe:
+
+* Process execution
+* Network activity
+* Runtime security events
+* Container behavior
+
+Tetragon is used alongside Cilium.
+
+---
+
+# 🔑 Secrets Management
+
+Secrets are never committed to Git.
+
+Local development may use Kubernetes Secrets.
+
+Production-style secret management uses:
+
+**External Secrets Operator**
+
+```text
+External Secret Store
+        │
+        ▼
+External Secrets Operator
+        │
+        ▼
+Kubernetes Secret
+        │
+        ▼
+Application
+```
+
+When migrating to AWS, this can integrate with AWS Secrets Manager.
+
+---
+
+# 🔒 TLS
+
+TLS certificates are managed using:
+
+**cert-manager**
+
+Example:
+
+```text
+Let's Encrypt
+     │
+     ▼
+cert-manager
+     │
+     ▼
+TLS Secret
+     │
+     ▼
+Nginx
+```
+
+---
+
+# 🔭 Observability
+
+Observability is a **core platform capability**, not an optional feature.
+
+The project uses:
+
+* OpenTelemetry
+* Grafana Alloy
+* Prometheus
+* Loki
+* Tempo
+* Grafana
+* Alertmanager
+
+---
+
+# 📊 Observability Architecture
+
+```text
+                         APPLICATIONS
+                              │
+                              ▼
+                       OpenTelemetry
+                              │
+                              ▼
+                       Grafana Alloy
+                              │
+                ┌─────────────┼─────────────┐
+                │             │             │
+                ▼             ▼             ▼
+           Prometheus        Loki          Tempo
+             Metrics         Logs          Traces
+                │             │             │
+                └─────────────┼─────────────┘
+                              │
+                              ▼
+                           Grafana
+                              │
+                              ▼
+                         Alertmanager
+```
+
+---
+
+# 📈 Metrics
+
+**Prometheus** collects metrics from:
+
+* Kubernetes
+* Application services
+* Nginx
+* PostgreSQL
+* Redis
+* Kafka
+* Infrastructure
+
+Important metrics include:
+
+```text
+Request rate
+Error rate
+p95 latency
+p99 latency
+CPU usage
+Memory usage
+Pod availability
+Database health
+Kafka consumer lag
+```
+
+---
+
+# 📝 Centralized Logging
+
+Application and infrastructure logs are collected using:
+
+**Grafana Alloy**
+
+and stored in:
+
+**Loki**
+
+```text
+Application
+     │
+     ▼
+Grafana Alloy
+     │
+     ▼
+Loki
+     │
+     ▼
+Grafana
+```
+
+> Promtail is intentionally not used because it reached end-of-life. Grafana Alloy is used instead.
+
+---
+
+# 🔭 Distributed Tracing
+
+Distributed tracing uses:
+
+* OpenTelemetry
+* Grafana Alloy
+* Tempo
+* Grafana
+
+Example:
+
+```text
+HTTP Request
+     │
+     ▼
+Nginx
+     │
+     ▼
 Order Service
      │
-     │ Order Created Event
-     ▼
-   Kafka
+     ├── Payment Service
      │
-     ├──────────► Inventory Service
+     ├── Inventory Service
      │
-     ├──────────► Payment Service
-     │
-     ├──────────► Email Service
-     │
-     └──────────► Notification Service
+     └── Kafka
+            │
+            ▼
+      Notification Service
 ```
 
-This allows services to communicate asynchronously without creating tight dependencies between them.
+A single trace can be used to investigate latency and failures across multiple services.
+
+---
+
+# 🚨 Alerting
+
+**Alertmanager** handles alert routing.
+
+Example alerts:
+
+```text
+High error rate
+High p95/p99 latency
+Pod unavailable
+CrashLoopBackOff
+High CPU
+High memory
+Kafka consumer lag
+Database unavailable
+Certificate expiry
+Service unavailable
+```
+
+---
+
+# 📊 Grafana Dashboards
+
+Grafana dashboards will provide visibility into:
+
+### Application
+
+* Request rate
+* Error rate
+* Latency
+* HTTP status codes
+
+### Kubernetes
+
+* Nodes
+* Pods
+* CPU
+* Memory
+* Restarts
+* Deployment health
+
+### Infrastructure
+
+* PostgreSQL
+* Redis
+* Kafka
+* Nginx
+
+### Business / E-Commerce
+
+* Orders
+* Failed payments
+* Inventory events
+* Kafka events
+* Checkout failures
+
+---
+
+# 📈 Autoscaling
+
+## HPA
+
+Horizontal Pod Autoscaler scales workloads based on metrics.
+
+```text
+Traffic
+   │
+   ▼
+Prometheus / Metrics API
+   │
+   ▼
+HPA
+   │
+   ▼
+Pods ↑ / ↓
+```
+
+---
+
+## KEDA
+
+KEDA enables event-driven autoscaling.
+
+Example:
+
+```text
+Kafka Consumer Lag
+        │
+        ▼
+       KEDA
+        │
+        ▼
+Consumer Pods ↑
+```
+
+This is particularly useful for Kafka-based services such as notifications and asynchronous order processing.
+
+---
+
+# 🚀 Progressive Delivery
+
+**Argo Rollouts** is used for progressive deployments.
+
+Example:
+
+```text
+Version 1
+   │
+   ├── 90%
+   │
+   └── Version 2
+          │
+          └── 10%
+                │
+                ▼
+             Metrics
+                │
+          ┌─────┴─────┐
+          ▼           ▼
+       Healthy      Failed
+          │           │
+          ▼           ▼
+       Promote      Rollback
+```
+
+Deployment strategies include:
+
+* Canary
+* Blue/Green
+* Progressive delivery
+* Automated rollback
+
+---
+
+# 🔄 GitOps
+
+**Argo CD** manages Kubernetes application deployment.
+
+Git is the source of truth.
+
+```text
+Developer
+    │
+    ▼
+GitHub
+    │
+    ▼
+GitOps Repository
+    │
+    ▼
+Argo CD
+    │
+    ▼
+Kubernetes
+```
+
+Argo CD continuously reconciles the desired state from Git with the cluster.
+
+---
+
+# 🗄️ PostgreSQL
+
+PostgreSQL is the primary relational database.
+
+Used for application data such as:
+
+* Users
+* Products
+* Vendors
+* Orders
+* Payments
+* Inventory
+* Cart data
 
 ---
 
 # ⚡ Redis
 
-Redis is used by services that require caching or temporary data storage.
+Redis is used for:
+
+* Caching
+* Fast lookups
+* Sessions
+* Temporary application data
+* Distributed coordination where required
+
+---
+
+# 📨 Apache Kafka
+
+Kafka provides event-driven communication.
+
+Example events:
+
+```text
+OrderCreated
+PaymentCompleted
+InventoryUpdated
+InvoiceCreated
+NotificationRequested
+```
+
+Example architecture:
+
+```text
+Order Service
+     │
+     ▼
+   Kafka
+     │
+ ┌───┼──────────────┐
+ ▼   ▼              ▼
+Inventory  Invoice  Notification
+```
+
+---
+
+# 🗄️ MinIO
+
+MinIO provides S3-compatible object storage for local development.
+
+Used for:
+
+* Product images
+* Uploaded files
+* Object storage
+
+Migration path:
+
+```text
+Local Development
+       │
+       ▼
+     MinIO
+       │
+       ▼
+AWS Migration
+       │
+       ▼
+Amazon S3
+```
+
+---
+
+# 💾 Backup & Disaster Recovery
+
+**Velero** is used for Kubernetes backup and restore.
+
+The project will demonstrate an actual recovery scenario:
+
+```text
+Deploy Application
+       │
+       ▼
+Create Backup
+       │
+       ▼
+Simulate Failure
+       │
+       ▼
+Delete Namespace
+       │
+       ▼
+Restore
+       │
+       ▼
+Verify Application
+       │
+       ▼
+Verify Data
+```
+
+The DR documentation will include:
+
+* RTO
+* RPO
+* Backup procedure
+* Restore procedure
+* Validation
+* Recovery results
+
+---
+
+# 🧪 Testing Strategy
+
+Testing is performed at multiple levels.
+
+## Unit Testing
+
+* Jest
+* Vitest
+
+## API Testing
+
+* Supertest
+
+## End-to-End Testing
+
+* Playwright
+
+## Load Testing
+
+* k6
+
+## Kubernetes Validation
+
+* kubeconform
+
+## Helm Validation
+
+```bash
+helm lint
+```
+
+Testing lifecycle:
+
+```text
+Unit Tests
+    ↓
+Integration Tests
+    ↓
+API Tests
+    ↓
+E2E Tests
+    ↓
+Load Tests
+```
+
+---
+
+# 🛡️ Kubernetes Reliability
+
+Production workloads use:
+
+* Readiness probes
+* Liveness probes
+* Startup probes
+* Resource requests
+* Resource limits
+* Rolling updates
+* PodDisruptionBudgets
+* Topology spread constraints
+* Graceful shutdown
+* Timeouts
+* Retry strategies
+* Health checks
+
+---
+
+# 📐 SLI / SLO
+
+The platform will define measurable reliability objectives.
+
+## Availability
+
+```text
+Successful Requests / Total Requests
+```
+
+## Latency
+
+```text
+p95 HTTP latency
+p99 HTTP latency
+```
+
+## Error Rate
+
+```text
+5xx Responses / Total Requests
+```
+
+## Kafka
+
+```text
+Consumer Lag
+```
+
+These metrics are visualized through Grafana and can be used for deployment and reliability decisions.
+
+---
+
+# 📁 Repository Structure
+
+The repository will progressively evolve toward:
+
+```text
+ecommerce/
+│
+├── frontend/
+│
+├── admin-dashboard/
+│
+├── vendor-dashboard/
+│
+├── services/
+│   ├── auth-service/
+│   ├── user-service/
+│   ├── product-service/
+│   ├── cart-service/
+│   ├── order-service/
+│   ├── payment-service/
+│   ├── inventory-service/
+│   ├── rating-service/
+│   ├── invoice-service/
+│   └── notification-service/
+│
+├── docker/
+│
+├── k8s/
+│
+├── helm/
+│
+├── terraform/
+│
+├── gitops/
+│
+├── tests/
+│
+├── scripts/
+│
+├── docs/
+│   ├── architecture/
+│   ├── adr/
+│   ├── security/
+│   ├── observability/
+│   ├── runbooks/
+│   └── disaster-recovery/
+│
+├── .github/
+│   ├── workflows/
+│   ├── CODEOWNERS
+│   └── dependabot.yml
+│
+├── docker-compose.yml
+├── README.md
+└── .gitignore
+```
+
+The existing application structure will be preserved wherever practical rather than 
+
+performing unnecessary rewrites.
+
+---
+
+# 🌿 Git Strategy
+
+Recommended workflow:
+
+```text
+main
+ │
+ ├── develop
+ │
+ ├── feature/*
+ │
+ └── release/*
+```
+
+Pull requests should require:
+
+* Code review
+* Automated tests
+* Security checks
+* Successful CI
+* Required status checks
+
+Direct pushes to `main` should be restricted.
+
+---
+
+# 🔄 Complete Deployment Lifecycle
+
+```text
+Developer
+    │
+    ▼
+Feature Branch
+    │
+    ▼
+Pull Request
+    │
+    ├── Unit Tests
+    ├── Integration Tests
+    ├── CodeQL
+    ├── SonarQube
+    ├── Checkov
+    ├── Trivy
+    ├── Helm Lint
+    └── kubeconform
+    │
+    ▼
+Merge
+    │
+    ▼
+Docker BuildKit
+    │
+    ├── SBOM → Syft
+    └── Signature → Cosign
+    │
+    ▼
+GHCR
+    │
+    ▼
+GitOps Repository
+    │
+    ▼
+Argo CD
+    │
+    ▼
+Kubernetes
+    │
+    ▼
+Argo Rollouts
+    │
+    ▼
+Application
+    │
+    ▼
+OpenTelemetry
+    │
+    ▼
+Grafana Alloy
+    │
+ ┌──┼──────────┐
+ ▼  ▼          ▼
+Metrics Logs  Traces
+ │  │          │
+ ▼  ▼          ▼
+Prometheus Loki Tempo
+ └──┼──────────┘
+    ▼
+ Grafana
+    │
+    ▼
+Alertmanager
+```
+
+---
+
+# 🔐 Supply Chain Security
+
+The project follows a software supply-chain security workflow:
+
+```text
+Source
+  │
+  ├── Secret Scanning
+  ├── Dependabot
+  └── CodeQL
+  │
+  ▼
+CI Security
+  │
+  ├── SonarQube
+  ├── Checkov
+  └── Trivy
+  │
+  ▼
+Container
+  │
+  ├── Syft → SBOM
+  └── Cosign → Signature
+  │
+  ▼
+GHCR
+  │
+  ▼
+Kyverno
+  │
+  ▼
+Kubernetes
+```
+
+---
+
+# 💻 Local Development
+
+## Prerequisites
+
+Install:
+
+```text
+Git
+Docker
+Node.js
+npm
+kubectl
+kind
+Helm
+Terraform
+Checkov
+GitHub CLI
+```
+
+Additional platform tools will be introduced during implementation.
+
+---
+
+# 🐳 Run Existing Application
+
+Docker Compose can continue to be used for application development.
+
+```bash
+docker compose up -d
+```
+
+Check running containers:
+
+```bash
+docker ps
+```
+
+---
+
+# ☸️ Create Kubernetes Cluster
+
+Example:
+
+```bash
+kind create cluster --name ecommerce
+```
+
+Verify:
+
+```bash
+kubectl cluster-info
+```
+
+```bash
+kubectl get nodes
+```
+
+---
+
+# 📦 Helm Deployment
+
+Validate the chart:
+
+```bash
+helm lint ./helm/ecommerce
+```
+
+Deploy:
+
+```bash
+helm install ecommerce ./helm/ecommerce
+```
+
+Check workloads:
+
+```bash
+kubectl get pods
+```
+
+---
+
+# 🔄 GitOps Deployment
+
+After Argo CD is configured:
+
+```text
+GitHub
+   │
+   ▼
+Argo CD
+   │
+   ▼
+Kubernetes
+```
+
+Application changes should be delivered through Git rather than manually changing production resources.
+
+---
+
+# 🔍 Kubernetes Troubleshooting
+
+Check nodes:
+
+```bash
+kubectl get nodes
+```
+
+Check all pods:
+
+```bash
+kubectl get pods -A
+```
+
+Check services:
+
+```bash
+kubectl get svc -A
+```
+
+Check deployments:
+
+```bash
+kubectl get deployments -A
+```
+
+Check events:
+
+```bash
+kubectl get events -A
+```
+
+View logs:
+
+```bash
+kubectl logs <pod-name>
+```
+
+Describe a pod:
+
+```bash
+kubectl describe pod <pod-name>
+```
+
+---
+
+# 🧪 Failure Testing
+
+Production engineering requires testing failure scenarios.
 
 Examples include:
 
-* Cart data
-* Product caching
-* Session-related data
-* Frequently accessed information
+### Pod failure
 
-Default local configuration:
+```bash
+kubectl delete pod <pod-name>
+```
+
+Expected:
 
 ```text
-Redis: localhost:6379
+Pod Failure
+    ↓
+Kubernetes Detects Failure
+    ↓
+New Pod Created
+    ↓
+Service Recovers
+```
+
+### Deployment failure
+
+```text
+Deployment
+    ↓
+Canary
+    ↓
+Metrics Failure
+    ↓
+Automatic Rollback
+```
+
+### Kafka failure
+
+Observe:
+
+```text
+Consumer Lag
+    ↓
+Alert
+    ↓
+KEDA Scaling
+    ↓
+Recovery
 ```
 
 ---
 
-# 📦 MinIO
+# 💾 Disaster Recovery Test
 
-MinIO provides S3-compatible object storage for application files.
-
-It is used for assets such as:
-
-* Product images
-* Generated invoices
-* Other application files
-
-Default local ports:
+The project will periodically perform:
 
 ```text
-MinIO API:     localhost:9000
-MinIO Console: localhost:9001
+1. Deploy application
+2. Create Velero backup
+3. Simulate failure
+4. Delete namespace
+5. Restore namespace
+6. Verify workloads
+7. Verify services
+8. Verify application
+9. Verify data
+10. Document recovery time
 ```
 
 ---
 
-# 🔐 Authentication
+# 📚 Documentation
 
-Authentication is handled through the Auth Service.
-
-The platform supports:
-
-* JWT-based authentication
-* Google OAuth
-* Role-based application access
-* Authorization headers through the API Gateway
-
-The JWT token is forwarded by Nginx to protected backend services.
-
-### Application Roles
+Documentation is maintained under:
 
 ```text
-USER
-VENDOR
-ADMIN
+docs/
+├── architecture/
+├── adr/
+├── security/
+├── observability/
+├── runbooks/
+└── disaster-recovery/
 ```
 
-Vendor approval status is used in addition to the role to control vendor-specific operations.
+Architecture Decision Records will document decisions such as:
+
+* Why Kubernetes?
+* Why kind?
+* Why Nginx?
+* Why Cilium?
+* Why Helm?
+* Why Terraform?
+* Why GitHub Actions?
+* Why Argo CD?
+* Why OpenTelemetry?
+* Why Grafana Alloy?
+* Why Kyverno?
+* Why no service mesh initially?
+* Why no Ansible?
 
 ---
 
-# 🔄 Customer Order Flow
+# 🧠 Engineering Principles
 
-A typical customer order follows this flow:
+## 1. Preserve working application functionality
+
+The existing e-commerce application is enhanced rather than unnecessarily rewritten.
+
+## 2. Production-grade over tool count
+
+Every technology should solve a real operational problem.
+
+## 3. Git is the source of truth
+
+Deployment configuration is managed through GitOps.
+
+## 4. Security is part of CI/CD
+
+Security scanning happens before deployment.
+
+## 5. Observability is built in
+
+Metrics, logs, and traces are first-class platform capabilities.
+
+## 6. Automate repetitive operations
+
+CI/CD, deployments, scaling, certificates, policies, and backups are automated.
+
+## 7. Test failure
+
+The platform demonstrates recovery from real failure scenarios.
+
+## 8. Avoid unnecessary overlapping tools
+
+The project deliberately does **not** introduce tools simply to increase the technology count.
+
+---
+
+# 🚫 Technologies Intentionally Not Used
+
+The following technologies are not part of the core architecture:
+
+| Technology                   | Decision    |
+| ---------------------------- | ----------- |
+| Minikube                     | ❌           |
+| k3s                          | ❌           |
+| Traefik                      | ❌           |
+| Jenkins                      | ❌           |
+| Ansible                      | ❌           |
+| Istio                        | ❌ Initially |
+| Linkerd                      | ❌           |
+| Promtail                     | ❌ EOL       |
+| Falco                        | ❌ Initially |
+| Rancher                      | ❌           |
+| Multiple ingress controllers | ❌           |
+| Multiple service meshes      | ❌           |
+
+### Why no Ansible?
+
+This project is Kubernetes-first.
+
+The responsibilities are already covered by:
 
 ```text
-Customer
-   │
-   ▼
-Storefront
-   │
-   ▼
-Nginx API Gateway
-   │
-   ▼
-Product Service
-   │
-   ▼
-Cart Service
-   │
-   ▼
-Checkout
-   │
-   ▼
-Order Service
-   │
-   ├──► Payment Service
-   │
-   ├──► Inventory Service
-   │
-   ├──► Invoice Service
-   │
-   └──► Notification Service
+Terraform
+   ↓
+Infrastructure
+
+Helm
+   ↓
+Application Packaging
+
+Argo CD
+   ↓
+Application Deployment
+
+GitHub Actions
+   ↓
+CI/CD Automation
+
+Kubernetes
+   ↓
+Runtime
 ```
+
+Adding Ansible would introduce overlapping automation without a strong requirement.
 
 ---
 
-# 🔄 Vendor-to-Product Flow
+# 🗺️ Implementation Roadmap
+
+## Phase 1 — Containerization & Kubernetes
+
+* [ ] Review existing Dockerfiles
+* [ ] Optimize container images
+* [ ] Enable BuildKit
+* [ ] Create kind cluster
+* [ ] Deploy Kubernetes workloads
+* [ ] Configure Nginx
+* [ ] Configure Gateway API
+* [ ] Create Helm charts
+
+---
+
+## Phase 2 — Infrastructure as Code
+
+* [ ] Terraform structure
+* [ ] Terraform validation
+* [ ] Checkov
+* [ ] Platform configuration
+* [ ] Documentation
+
+---
+
+## Phase 3 — CI/CD
+
+* [ ] GitHub Actions
+* [ ] Unit tests
+* [ ] Integration tests
+* [ ] CodeQL
+* [ ] SonarQube
+* [ ] Trivy
+* [ ] Helm lint
+* [ ] kubeconform
+* [ ] Docker BuildKit
+* [ ] GHCR
+
+---
+
+## Phase 4 — Supply Chain Security
+
+* [ ] Syft
+* [ ] SBOM
+* [ ] Cosign
+* [ ] Image signing
+* [ ] Image verification
+* [ ] Kyverno policies
+
+---
+
+## Phase 5 — GitOps
+
+* [ ] Argo CD
+* [ ] GitOps repository
+* [ ] Automated synchronization
+* [ ] Deployment rollback
+
+---
+
+## Phase 6 — Networking & Security
+
+* [ ] Cilium
+* [ ] Hubble
+* [ ] NetworkPolicy
+* [ ] Kyverno
+* [ ] cert-manager
+* [ ] External Secrets Operator
+* [ ] RBAC
+* [ ] Pod Security Standards
+* [ ] Tetragon
+
+---
+
+## Phase 7 — Observability
+
+* [ ] OpenTelemetry
+* [ ] Grafana Alloy
+* [ ] Prometheus
+* [ ] Loki
+* [ ] Tempo
+* [ ] Grafana
+* [ ] Alertmanager
+* [ ] Application metrics
+* [ ] Centralized logging
+* [ ] Distributed tracing
+* [ ] Dashboards
+* [ ] Alerts
+
+---
+
+## Phase 8 — Scaling & Reliability
+
+* [ ] HPA
+* [ ] KEDA
+* [ ] Kafka consumer scaling
+* [ ] PodDisruptionBudgets
+* [ ] Topology spread
+* [ ] Resource tuning
+* [ ] k6 load testing
+* [ ] SLOs / SLIs
+
+---
+
+## Phase 9 — Progressive Delivery
+
+* [ ] Argo Rollouts
+* [ ] Canary deployment
+* [ ] Blue/Green deployment
+* [ ] Automated rollback
+
+---
+
+## Phase 10 — Disaster Recovery
+
+* [ ] Velero
+* [ ] Backup
+* [ ] Restore
+* [ ] Namespace recovery
+* [ ] RTO/RPO validation
+* [ ] DR documentation
+
+---
+
+# ☁️ Future AWS Architecture
+
+The local platform is designed with a future AWS migration path.
+
+| Local            | AWS                            |
+| ---------------- | ------------------------------ |
+| kind             | Amazon EKS                     |
+| MinIO            | Amazon S3                      |
+| PostgreSQL       | Amazon RDS / Aurora PostgreSQL |
+| Redis            | Amazon ElastiCache             |
+| Kafka            | Amazon MSK                     |
+| GHCR             | Amazon ECR                     |
+| External Secrets | AWS Secrets Manager            |
+| Terraform        | Terraform                      |
+| Argo CD          | Argo CD on EKS                 |
+
+The application architecture should remain largely unchanged.
+
+---
+
+# 💰 Cost Strategy
+
+The initial implementation is **local-first**.
+
+Core development can run using:
 
 ```text
-Vendor
-   │
-   ▼
-Vendor Dashboard :5173
-   │
-   ▼
-Register
-   │
-   ▼
-PENDING
-   │
-   ▼
-Admin Dashboard :5174
-   │
-   ├──────────────► REJECTED
-   │
-   ▼
-APPROVED
-   │
-   ▼
-Vendor Login
-   │
-   ▼
-Vendor Dashboard
-   │
-   ▼
-Create Product
-   │
-   ▼
-Product Service
-   │
-   ▼
-Product Database
+Docker
+kind
+Kubernetes
+PostgreSQL
+Redis
+Kafka
+MinIO
+```
+
+This allows DevOps, DevSecOps, GitOps, Kubernetes, security, and observability practices to be demonstrated without requiring expensive AWS infrastructure.
+
+AWS can be introduced later.
+
+---
+
+# 🎓 Skills Demonstrated
+
+## Linux
+
+* Process management
+* Networking
+* Permissions
+* Troubleshooting
+* Shell scripting
+
+## Git
+
+* Branching
+* Pull requests
+* Repository protection
+* CODEOWNERS
+* GitOps
+
+## Docker
+
+* Containerization
+* Multi-stage builds
+* BuildKit
+* Image optimization
+* Image security
+
+## Kubernetes
+
+* Pods
+* Deployments
+* Services
+* ConfigMaps
+* Secrets
+* Gateway API
+* RBAC
+* NetworkPolicy
+* HPA
+* PDB
+* Probes
+* Scheduling
+
+## Terraform
+
+* Infrastructure as Code
+* Validation
+* Planning
+* Security scanning
+
+## CI/CD
+
+* GitHub Actions
+* Automated testing
+* Security gates
+* Container publishing
+
+## GitOps
+
+* Argo CD
+* Declarative deployments
+* Reconciliation
+* Rollbacks
+
+## DevSecOps
+
+* SAST
+* Dependency scanning
+* Secret scanning
+* Container scanning
+* IaC scanning
+* SBOM
+* Image signing
+* Admission policies
+* Runtime security
+
+## Observability
+
+* OpenTelemetry
+* Metrics
+* Logs
+* Distributed tracing
+* Grafana
+* Alerting
+* SLOs
+
+## Reliability
+
+* Autoscaling
+* Failure recovery
+* Canary deployment
+* Backup
+* Disaster recovery
+
+---
+
+# 🏆 Portfolio Demonstrations
+
+## 1. CI/CD
+
+```text
+Git Push
+   ↓
+GitHub Actions
+   ↓
+Tests + Security
+   ↓
+Docker Build
+   ↓
+GHCR
 ```
 
 ---
 
-# 🛠️ Technology Stack
+## 2. GitOps
 
-### Frontend
-
-* Next.js
-* React
-* TypeScript
-* Vite
-* Tailwind CSS
-* Zustand
-
-### Backend
-
-* Node.js
-* Express.js
-* TypeScript
-* Prisma
-* REST APIs
-* JWT
-* Google OAuth
-
-### Data & Messaging
-
-* PostgreSQL
-* Redis
-* Apache Kafka
-* Zookeeper
-
-### Storage & Gateway
-
-* MinIO
-* Nginx
-
-### External Integrations
-
-* Razorpay
-* Google OAuth
-* Gmail SMTP
+```text
+Git Change
+    ↓
+Argo CD
+    ↓
+Kubernetes
+```
 
 ---
 
-# 🚦 Application Ports
+## 3. DevSecOps
 
-| Application / Service |   Port |
-| --------------------- | -----: |
-| Storefront            | `3000` |
-| Vendor Dashboard      | `5173` |
-| Admin Dashboard       | `5174` |
-| API Gateway           | `8081` |
-| Product Service       | `3003` |
-| Notification Service  | `3018` |
-| WebSocket             | `8080` |
-| PostgreSQL            | `5432` |
-| Redis                 | `6379` |
-| Kafka                 | `9092` |
-| MinIO API             | `9000` |
-| MinIO Console         | `9001` |
-
----
-
-# 🎯 Project Goals
-
-This project demonstrates how an ecommerce application can be structured using:
-
-* Microservices architecture
-* API Gateway pattern
-* Event-driven communication
-* Independent service databases
-* Authentication and authorization
-* Vendor approval workflow
-* Product management
-* Shopping cart and checkout
-* Order processing
-* Payment processing
-* Inventory management
-* Object storage
-* Distributed frontend applications
+```text
+Code
+ ↓
+CodeQL
+ ↓
+SonarQube
+ ↓
+Checkov
+ ↓
+Trivy
+ ↓
+SBOM
+ ↓
+Cosign
+ ↓
+Kyverno
+ ↓
+Kubernetes
+```
 
 ---
 
-# 📌 Future Development
+## 4. Observability
 
-The application can be extended with additional features such as:
+```text
+Request
+   ↓
+Nginx
+   ↓
+Order
+   ↓
+Payment
+   ↓
+Inventory
+   ↓
+Kafka
+   ↓
+Notification
+```
 
-* Advanced product search
-* Recommendation systems
-* Improved analytics
-* Real-time order updates
-* Enhanced notification workflows
-* Additional payment methods
-* Improved vendor management
-* Customer support functionality
+Trace the complete request in Grafana/Tempo.
 
-**DevOps implementation such as CI/CD, cloud deployment, Terraform, Kubernetes, monitoring, logging, and infrastructure automation will be handled separately from this application project.**
+---
+
+## 5. Network Observability
+
+```text
+Service A
+    ↓
+Cilium
+    ↓
+Hubble
+    ↓
+Network Visibility
+```
+
+---
+
+## 6. Autoscaling
+
+```text
+Traffic
+   ↓
+Metrics
+   ↓
+HPA
+   ↓
+Pods ↑
+```
+
+Kafka:
+
+```text
+Consumer Lag
+   ↓
+KEDA
+   ↓
+Consumers ↑
+```
+
+---
+
+## 7. Canary Deployment
+
+```text
+v1 → 90%
+v2 → 10%
+     ↓
+Metrics
+     ↓
+Promote / Rollback
+```
+
+---
+
+## 8. Disaster Recovery
+
+```text
+Backup
+   ↓
+Failure
+   ↓
+Delete
+   ↓
+Restore
+   ↓
+Verify
+```
+
+---
+
+# 🎯 Final Goal
+
+The project demonstrates the complete lifecycle of a production application:
+
+```text
+                    ┌──────────────┐
+                    │   DEVELOP    │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │     TEST     │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │    SECURE    │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │    BUILD     │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │    DEPLOY    │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │   OBSERVE    │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │    SCALE     │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │   RECOVER    │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │   IMPROVE    │
+                    └──────────────┘
+```
+
+---
+
+# 📌 Project Status
+
+> 🚧 **Actively being productionized**
+
+The existing e-commerce application is progressively being transformed into a production-grade cloud-native platform.
+
+Current target:
+
+```text
+Existing E-Commerce Application
+              ↓
+         Dockerized
+              ↓
+          Kubernetes
+              ↓
+        CI/CD + Security
+              ↓
+           GitOps
+              ↓
+        Observability
+              ↓
+        Autoscaling
+              ↓
+    Progressive Delivery
+              ↓
+      Backup / Recovery
+```
 
 ---
 
@@ -809,14 +2155,9 @@ The application can be extended with additional features such as:
 
 **Swapna Adhav**
 
----
+### DevOps • Cloud • DevSecOps Portfolio Project
 
-# 📄 License
+Core technologies:
 
-Copyright © 2026 Swapna Adhav. All Rights Reserved.
-
-This project is provided for portfolio and educational purposes only.
-You may view the source code, but you may not copy, modify, distribute,
-or use this project or substantial portions of its source code without
-prior written permission from the author.
+`AWS • Kubernetes • Docker • Terraform • GitHub Actions • Argo CD • Cilium • DevSecOps • Observability • CI/CD`
 
