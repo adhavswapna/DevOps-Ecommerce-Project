@@ -13,6 +13,8 @@ if (!JWT_SECRET) {
 export interface JwtPayload {
   userId: string;
   role: Role;
+  name?: string | null;
+  email?: string;
 }
 
 /* =========================

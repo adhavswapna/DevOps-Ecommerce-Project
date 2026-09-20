@@ -1,3 +1,5 @@
+
+import { KafkaMessage } from "kafkajs";
 import { getUserConsumer } from "./kafka.client";
 import { USER_TOPICS } from "./user.topics";
 import { UserService } from "../services/user.service";
@@ -10,7 +12,7 @@ export async function startUserConsumer() {
   });
 
   await consumer.run({
-    eachMessage: async ({ message }) => {
+    eachMessage: async ({ message }: { message: KafkaMessage }) => {
       if (!message.value) return;
 
       const payload = JSON.parse(message.value.toString());
@@ -28,3 +30,4 @@ export async function startUserConsumer() {
     },
   });
 }
+

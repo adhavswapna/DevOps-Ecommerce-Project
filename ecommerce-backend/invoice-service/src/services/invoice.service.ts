@@ -607,7 +607,10 @@ export async function generateAndStoreInvoice(
         amount:
           invoiceAmount,
 
-        fileKey,
+	userEmail:
+    	  user.email,
+
+        invoiceUrl: fileKey,
 
         createdAt:
           new Date().toISOString(),

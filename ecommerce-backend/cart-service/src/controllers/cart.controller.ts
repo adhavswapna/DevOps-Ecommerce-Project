@@ -244,7 +244,7 @@ export async function updateItem(
 ) {
   try {
     const userId = (req as any).user?.userId;
-    const { itemId } = req.params;
+    const itemId = String(req.params.itemId);
     const { quantity } = req.body;
 
     if (!userId) {
@@ -301,7 +301,7 @@ export async function removeItemController(
 ) {
   try {
     const userId = (req as any).user?.userId;
-    const { itemId } = req.params;
+    const itemId = String(req.params.itemId);
 
     if (!userId) {
       return res.status(401).json({
@@ -426,7 +426,7 @@ export async function moveItemToWishlist(
 ) {
   try {
     const userId = (req as any).user?.userId;
-    const { itemId } = req.params;
+    const itemId = String(req.params.itemId);
 
     if (!userId) {
       return res.status(401).json({
@@ -470,7 +470,7 @@ export async function moveItemToCart(
 ) {
   try {
     const userId = (req as any).user?.userId;
-    const { itemId } = req.params;
+    const itemId = String(req.params.itemId);
 
     if (!userId) {
       return res.status(401).json({
@@ -501,3 +501,4 @@ export async function moveItemToCart(
     });
   }
 }
+

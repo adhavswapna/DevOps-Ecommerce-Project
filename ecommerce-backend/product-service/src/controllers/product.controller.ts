@@ -1,3 +1,4 @@
+
 import { Request, Response } from "express";
 
 import {
@@ -190,8 +191,7 @@ export async function getProduct(
   res: Response
 ) {
   try {
-    const { id } =
-      req.params;
+    const id = String(req.params.id);
 
     if (!id) {
       return res.status(400).json({
@@ -463,8 +463,7 @@ export async function editProduct(
   res: Response
 ) {
   try {
-    const { id } =
-      req.params;
+    const id = String(req.params.id);
 
     const userId =
       req.user?.userId;
@@ -661,8 +660,7 @@ export async function removeProduct(
   res: Response
 ) {
   try {
-    const { id } =
-      req.params;
+    const id = String(req.params.id);
 
     const userId =
       req.user?.userId;
@@ -756,8 +754,7 @@ export async function getStock(
   res: Response
 ) {
   try {
-    const { id } =
-      req.params;
+    const id = String(req.params.id);
 
     if (!id) {
       return res.status(400).json({
@@ -801,3 +798,4 @@ export async function getStock(
     });
   }
 }
+

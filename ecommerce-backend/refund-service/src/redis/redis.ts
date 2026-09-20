@@ -7,6 +7,6 @@ redisClient.on("connect", () => {
   console.log("🟢 Redis connected (refund-service)");
 });
 
-redisClient.on("error", (err) => {
+redisClient.on("error", (err: Error) => {
   console.error("🔴 Redis error:", err);
 });

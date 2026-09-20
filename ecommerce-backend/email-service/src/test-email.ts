@@ -1,4 +1,4 @@
-import sendEmail from "./kafka/sendEmail";
+import { sendEmail } from "./kafka/sendEmail";
 
 (async () => {
   try {

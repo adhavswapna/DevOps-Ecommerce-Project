@@ -1237,6 +1237,7 @@ export async function storeInvoicePDF(
     BUCKET,
     fileName,
     buffer,
+    buffer.length,
     {
       "Content-Type": "application/pdf",
     }

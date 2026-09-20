@@ -1,3 +1,4 @@
+
 import { Request, Response } from "express";
 import { VendorStatus } from "@prisma/client";
 
@@ -149,7 +150,10 @@ export class VendorController {
     res: Response
   ) => {
     try {
-      const { userId } = req.params;
+      const userId =
+        typeof req.params.userId === "string"
+          ? req.params.userId
+          : undefined;
 
       if (!userId) {
         return res.status(400).json({
@@ -206,7 +210,10 @@ export class VendorController {
     res: Response
   ) => {
     try {
-      const { id } = req.params;
+      const id =
+        typeof req.params.id === "string"
+          ? req.params.id
+          : undefined;
 
       if (!id) {
         return res.status(400).json({
@@ -272,7 +279,10 @@ export class VendorController {
     res: Response
   ) => {
     try {
-      const { id } = req.params;
+      const id =
+        typeof req.params.id === "string"
+          ? req.params.id
+          : undefined;
 
       if (!id) {
         return res.status(400).json({
@@ -366,7 +376,10 @@ export class VendorController {
     res: Response
   ) => {
     try {
-      const { id } = req.params;
+      const id =
+        typeof req.params.id === "string"
+          ? req.params.id
+          : undefined;
 
       if (!id) {
         return res.status(400).json({
@@ -455,7 +468,11 @@ export class VendorController {
     res: Response
   ) => {
     try {
-      const { id } = req.params;
+      const id =
+        typeof req.params.id === "string"
+          ? req.params.id
+          : undefined;
+
       const { status } = req.body;
 
       if (!id) {
@@ -532,3 +549,4 @@ export class VendorController {
     }
   };
 }
+

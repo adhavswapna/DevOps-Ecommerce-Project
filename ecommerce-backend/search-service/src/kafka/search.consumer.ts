@@ -1,14 +1,13 @@
-import { kafka } from "./kafka-client";
-import { KAFKA_TOPICS } from "./topics";
+import { Consumer } from "kafkajs";
+import { getKafkaConsumer } from "./kafka.client";
+import { KAFKA_TOPICS } from "./kafka-topics";
 
-let consumer: any;
+let consumer: Consumer | null = null;
 
 export async function startSearchConsumer() {
-  consumer = kafka.consumer({
-    groupId: process.env.KAFKA_GROUP_ID || "search-group",
-  });
-
-  await consumer.connect();
+  consumer = await getKafkaConsumer(
+    process.env.KAFKA_GROUP_ID || "search-group"
+  );
 
   await consumer.subscribe({
     topic: KAFKA_TOPICS.PRODUCT_CREATED,
@@ -25,41 +24,79 @@ export async function startSearchConsumer() {
     fromBeginning: false,
   });
 
-  console.log("🔎 Search Kafka consumer started");
+  console.log(
+    "🔎 Search Kafka consumer started"
+  );
 
   await consumer.run({
-    eachMessage: async ({ topic, message }) => {
-      if (!message.value) return;
+    eachMessage: async ({
+      topic,
+      message,
+    }) => {
+      if (!message.value) {
+        return;
+      }
 
       try {
-        const payload = JSON.parse(message.value.toString());
+        const payload =
+          JSON.parse(
+            message.value.toString()
+          );
 
         switch (topic) {
           case KAFKA_TOPICS.PRODUCT_CREATED:
-            console.log("📥 Index new product:", payload);
+            console.log(
+              "📥 Index new product:",
+              payload
+            );
             break;
 
           case KAFKA_TOPICS.PRODUCT_UPDATED:
-            console.log("🔄 Update product index:", payload);
+            console.log(
+              "🔄 Update product index:",
+              payload
+            );
             break;
 
           case KAFKA_TOPICS.PRODUCT_DELETED:
-            console.log("🗑 Remove product from index:", payload);
+            console.log(
+              "🗑 Remove product index:",
+              payload
+            );
             break;
 
           default:
-            console.warn("⚠️ Unknown search topic:", topic);
+            console.warn(
+              "⚠️ Unknown search topic:",
+              topic
+            );
         }
       } catch (error) {
-        console.error("❌ Search consumer error:", error);
+        console.error(
+          "❌ Search consumer error:",
+          error
+        );
       }
     },
   });
 }
 
 export async function stopSearchConsumer() {
-  if (consumer) {
-    await consumer.disconnect();
-    console.log("🛑 Search Kafka consumer disconnected");
+  try {
+    if (consumer) {
+      await consumer.disconnect();
+
+      console.log(
+        "🛑 Search Kafka consumer disconnected"
+      );
+
+      consumer = null;
+    }
+  } catch (error) {
+    console.error(
+      "❌ Error disconnecting search consumer:",
+      error
+    );
   }
 }
+

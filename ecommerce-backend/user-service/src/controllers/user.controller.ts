@@ -54,7 +54,9 @@ export class UserController {
    */
   static async getById(req: Request, res: Response) {
     try {
-      const user = await UserService.getById(req.params.id);
+      const id = String(req.params.id);	
+      const user = await UserService.getById(id);
+      
 
       if (!user) {
         return res.status(404).json({
@@ -100,7 +102,7 @@ export class UserController {
    */
   static async updateProfile(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = String(req.params.id);
       const { name, email } = req.body;
 
       const user = await UserService.updateProfile(
@@ -130,7 +132,7 @@ export class UserController {
    */
   static async deleteUser(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const id = String(req.params.id);
 
       const user = await UserService.deleteUser(id);
 

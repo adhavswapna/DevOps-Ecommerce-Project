@@ -661,18 +661,7 @@ static async updateVendorStatus(
         });
       }
 
-      if (process.env.ENABLE_KAFKA === "true") {
-        await authProducer.publishVendorAuthCreated({
-          vendorId,
-          userId: user.id,
-          name: user.name!,
-          email: user.email,
-        });
-      }
-
-      console.log(
-        "📤 Vendor auth-created event published"
-      );
+      
 
       console.log(
         "=========================================="

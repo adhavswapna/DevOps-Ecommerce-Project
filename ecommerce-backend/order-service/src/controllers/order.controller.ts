@@ -160,8 +160,8 @@ export async function getOrderByIdController(
   res: Response
 ) {
   try {
-    const { orderId } =
-      req.params;
+    const orderId =
+      String(req.params.orderId);
 
     const order =
       await getOrderById(orderId);
@@ -194,8 +194,8 @@ export async function confirmOrder(
   res: Response
 ) {
   try {
-    const { orderId } =
-      req.params;
+    const orderId =
+      String(req.params.orderId);
 
     const order =
       await updateOrderStatus(
@@ -225,8 +225,8 @@ export async function cancelOrder(
   res: Response
 ) {
   try {
-    const { orderId } =
-      req.params;
+    const orderId =
+      String(req.params.orderId);
 
     const order =
       await updateOrderStatus(
@@ -242,7 +242,8 @@ export async function cancelOrder(
     );
 
     return res.status(500).json({
-      message: "Internal server error",
+      message: "Internal server error"
     });
   }
 }
+

@@ -1,3 +1,4 @@
+
 import { minioClient, BUCKET_NAME } from "./minio-client";
 
 export async function uploadInvoicePDF(
@@ -8,11 +9,14 @@ export async function uploadInvoicePDF(
     BUCKET_NAME,
     fileName,
     buffer,
+    buffer.length,
     {
       "Content-Type": "application/pdf",
     }
   );
 
-  console.log(`✅ Invoice uploaded to MinIO: ${fileName}`);
+  console.log(
+    `✅ Invoice uploaded to MinIO: ${fileName}`
+  );
 }
 

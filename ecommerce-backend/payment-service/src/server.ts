@@ -4,7 +4,7 @@ import "dotenv/config";
 import app from "./app";
 import { startPaymentConsumer } from "./kafka/payment.consumer";
 
-const PORT = process.env.PORT || 3007;
+const PORT = Number(process.env.PORT) || 3007;
 
 async function startServer() {
   try {

@@ -91,7 +91,7 @@ export async function getInvoice(
     }
 
     const invoice =
-      await getInvoiceById(id);
+      await getInvoiceById(String(id));
 
     if (!invoice) {
 
@@ -286,7 +286,7 @@ export async function downloadInvoiceController(
     }
 
     const invoice =
-      await getInvoiceById(id);
+      await getInvoiceById(String(id));
 
     if (!invoice) {
 

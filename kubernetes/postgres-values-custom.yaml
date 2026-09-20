@@ -1,0 +1,12 @@
+fullnameOverride: postgres
+
+architecture: standalone
+
+auth:
+  postgresPassword: postgres
+
+primary:
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: standard

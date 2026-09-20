@@ -49,14 +49,18 @@ export async function initMinio() {
 /**
  * Upload image
  */
+
 export async function uploadProductImage(
   fileName: string,
   buffer: Buffer,
-  mimeType: string
+  _mimeType: string
 ) {
-  await minioClient.putObject(BUCKET_NAME, fileName, buffer, {
-    "Content-Type": mimeType,
-  });
+  await minioClient.putObject(
+    BUCKET_NAME,
+    fileName,
+    buffer,
+    buffer.length
+  );
 
   console.log("✅ Uploaded:", fileName);
 

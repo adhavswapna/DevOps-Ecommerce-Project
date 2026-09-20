@@ -7,24 +7,56 @@ const prisma = new PrismaClient();
 // RECORD ANALYTICS EVENT
 // =====================================================
 
-export async function recordAnalyticsEvent(payload: any) {
+export async function recordAnalyticsEvent(
+  payload: any
+) {
   const { event, userId, data } = payload;
 
   if (!event || !userId) {
-    throw new Error("event and userId are required");
+    throw new Error(
+      "event and userId are required"
+    );
   }
 
-  const result = await prisma.analyticsEvent.create({
-    data: {
-      event,
-      userId,
-      data: data || {},
-    },
-  });
+  const result =
+    await prisma.analyticsEvent.create({
+      data: {
+        event,
+        userId,
+        data: data || {},
+      },
+    });
 
-  console.log(`📊 Analytics event stored → ${event}`);
+  console.log(
+    `📊 Analytics event stored → ${event}`
+  );
 
   return result;
+}
+
+// =====================================================
+// RECORD KAFKA EVENT
+// =====================================================
+
+export async function recordEvent(
+  topic: string,
+  payload: any
+) {
+  const userId =
+    payload.userId ||
+    payload.user?.id;
+
+  if (!userId) {
+    throw new Error(
+      `userId missing for analytics event: ${topic}`
+    );
+  }
+
+  return recordAnalyticsEvent({
+    event: topic,
+    userId: String(userId),
+    data: payload,
+  });
 }
 
 // =====================================================
@@ -57,7 +89,10 @@ export async function getVendorAnalytics(
   // COUNT EVENTS BY TYPE
   // ===================================================
 
-  const eventCounts: Record<string, number> = {};
+  const eventCounts: Record<
+    string,
+    number
+  > = {};
 
   for (const item of events) {
     eventCounts[item.event] =
@@ -94,7 +129,10 @@ export async function getAdminAnalytics() {
   // COUNT EVENTS BY TYPE
   // ===================================================
 
-  const eventCounts: Record<string, number> = {};
+  const eventCounts: Record<
+    string,
+    number
+  > = {};
 
   for (const item of events) {
     eventCounts[item.event] =
@@ -106,7 +144,9 @@ export async function getAdminAnalytics() {
   // ===================================================
 
   const uniqueUsers = new Set(
-    events.map((item) => item.userId)
+    events.map(
+      (item) => item.userId
+    )
   );
 
   // ===================================================

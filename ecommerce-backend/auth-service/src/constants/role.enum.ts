@@ -1,6 +1,1 @@
-export enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-  VENDOR = 'VENDOR'
-}
-
+export { Role } from "@prisma/client";

@@ -8,6 +8,16 @@ import {
 
 const prisma = new PrismaClient();
 
+type OrderItem = { 
+  productId: string; 
+  quantity: number; 
+  price: number; 
+}; 
+
+  type OrderWithItems = {
+   items: OrderItem[]; 
+};
+  
 const USER_ORDERS_CACHE = (
   userId: string
 ) => `orders:user:${userId}`;
@@ -105,6 +115,7 @@ export async function placeOrder(
 
     userId:
       order.userId,
+
     userEmail,
 
     totalAmount:
@@ -112,7 +123,9 @@ export async function placeOrder(
 
     items:
       order.items.map(
-        (item) => ({
+        (
+          item: OrderWithItems["items"][number]
+        ) => ({
           productId:
             item.productId,
 
@@ -347,19 +360,23 @@ export async function getVendorOrdersService(
 
   const vendorOrders =
     orders
-      .map((order) => ({
-        ...order,
+      .map(
+        (order: OrderWithItems) => ({
+          ...order,
 
-        items:
-          order.items.filter(
-            (item) =>
-              vendorProductIds.has(
-                item.productId
-              )
-          ),
-      }))
+          items:
+            order.items.filter(
+              (
+                item: OrderWithItems["items"][number]
+              ) =>
+                vendorProductIds.has(
+                  item.productId
+                )
+            ),
+        })
+      )
       .filter(
-        (order) =>
+        (order: OrderWithItems) =>
           order.items.length > 0
       );
 
@@ -492,3 +509,4 @@ export async function cancelOrderService(
 
   return order;
 }
+

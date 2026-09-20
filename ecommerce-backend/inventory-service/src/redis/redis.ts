@@ -8,7 +8,12 @@ const redis = new Redis({
 });
 
 redis.on('connect', () => console.log('✅ Inventory Service Redis connected'));
-redis.on('error', (err) => console.error('❌ Inventory Service Redis error:', err));
+redis.on("error", (err: Error) =>
+  console.error(
+    "❌ Inventory Service Redis error:",
+    err
+  )
+);
 
 export default redis;
 
