@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-service-config
+  namespace: ecommerce-dev
+  labels:
+    app: auth-service
+data:
+  NODE_ENV: {{ .Values.config.nodeEnv | quote }}
+  PORT: {{ .Values.service.targetPort | quote }}
+
+  JWT_EXPIRES_IN: {{ .Values.config.jwtExpiresIn | quote }}
+
+  KAFKA_BROKER: {{ .Values.config.kafkaBroker | quote }}
+  KAFKA_CLIENT_ID: {{ .Values.config.kafkaClientId | quote }}
+  ENABLE_KAFKA: {{ .Values.config.enableKafka | quote }}
+ 
+  REDIS_URL: {{ .Values.config.redisUrl | quote }}
+
+  GOOGLE_REDIRECT_URI: {{ .Values.config.googleRedirectUri | quote }}
+  FRONTEND_URL: {{ .Values.config.frontendUrl | quote }}

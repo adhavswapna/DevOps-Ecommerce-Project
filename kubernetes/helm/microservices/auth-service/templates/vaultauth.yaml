@@ -1,0 +1,13 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: auth-service
+  namespace: ecommerce-dev
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: vault-connection
+
+  kubernetes:
+    role: auth-service
+    serviceAccount: auth-service

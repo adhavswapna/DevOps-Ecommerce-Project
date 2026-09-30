@@ -1,0 +1,28 @@
+postgres:
+  image: postgres:15.4
+  username: postgres
+  password: postgres
+  database: ecommerce-postgres
+  port: 5432
+  storage: 10Gi
+
+redis:
+  image: redis:7.2
+  port: 6379
+
+zookeeper:
+  image: confluentinc/cp-zookeeper:7.4.1
+  port: 2181
+
+kafka:
+  image: confluentinc/cp-kafka:7.4.1
+  port: 9092
+  brokerId: 1
+
+minio:
+  image: quay.io/minio/minio:latest
+  apiPort: 9000
+  consolePort: 9001
+  rootUser: minio
+  rootPassword: minio123
+  storage: 10Gi

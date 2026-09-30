@@ -1,0 +1,34 @@
+replicaCount: 1
+
+image:
+  repository: auth-service
+  tag: dev
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3001
+  targetPort: 3001
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  nodeEnv: development
+  jwtExpiresIn: "7d"
+
+  kafkaBroker: kafka:9092
+  kafkaClientId: auth-service
+  enableKafka: "true"
+
+  redisUrl: redis://redis:6379
+
+  googleRedirectUri: http://127.0.0.1:3001/auth/google/callback
+  frontendUrl: http://localhost:3000
+
+
