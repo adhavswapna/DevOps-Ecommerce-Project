@@ -1,0 +1,36 @@
+replicaCount: 1
+
+image:
+  repository: user-service
+  tag: local
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3015
+  targetPort: 3015
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  nodeEnv: development
+
+  kafkaBroker: kafka:9092
+  kafkaClientId: user-service
+  enableKafka: "true"
+
+  redisHost: redis
+  redisPort: "6379"
+
+  jwtExpiresIn: "7d"
