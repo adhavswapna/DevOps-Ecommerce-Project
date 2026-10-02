@@ -31,4 +31,3 @@ config:
   googleRedirectUri: http://127.0.0.1:3001/auth/google/callback
   frontendUrl: http://localhost:3000
 
-
