@@ -1,0 +1,39 @@
+replicaCount: 1
+
+image:
+  repository: notification-service
+  tag: dev
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  name: notification-service
+  automount: true
+  annotations: {}
+
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  nodeEnv: development
+
+  kafkaBroker: kafka:9092
+  kafkaClientId: notification-service
+  enableKafka: "true"
+
+  redisHost: redis
+  redisPort: "6379"
+
+  websocketPort: "8080"
+
+
