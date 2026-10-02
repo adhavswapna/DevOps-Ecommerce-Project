@@ -8,6 +8,8 @@ RUN npm ci
 
 COPY . .
 
+RUN npx prisma generate --schema=src/db/prisma/schema.prisma
+
 RUN npm run build
 
 EXPOSE 3005

@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm ci --include=dev
+RUN npm ci
 
 COPY . .
 
@@ -12,6 +12,6 @@ RUN npx prisma generate --schema=src/db/prisma/schema.prisma
 
 RUN npm run build
 
-EXPOSE 3010
+EXPOSE 3000
 
 CMD ["node", "dist/server.js"]

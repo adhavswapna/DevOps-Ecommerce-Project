@@ -12,6 +12,6 @@ RUN npx prisma generate --schema=src/db/prisma/schema.prisma
 
 RUN npm run build
 
-EXPOSE 3002
+EXPOSE 3000
 
 CMD ["node", "dist/server.js"]
