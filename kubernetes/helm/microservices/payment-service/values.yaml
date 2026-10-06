@@ -1,0 +1,56 @@
+replicaCount: 1
+
+image:
+  repository: payment-service
+  tag: dev
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3007
+  targetPort: 3007
+
+containerPort: 3007
+
+serviceAccount:
+  create: true
+  automount: true
+  name: payment-service
+
+env:
+  NODE_ENV: development
+  PORT: "3007"
+
+  KAFKA_BROKER: kafka:9092
+  KAFKA_CLIENT_ID: payment-service
+  ENABLE_KAFKA: "true"
+
+  JWT_EXPIRES_IN: 7d
+
+resources: {}
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 3007
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 5
+
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 3007
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 5
+
+vault:
+  enabled: true
+  role: payment-service
+  secretPath: ecommerce/payment-service
+  secretName: payment-service-secret

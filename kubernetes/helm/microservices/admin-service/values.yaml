@@ -1,0 +1,59 @@
+replicaCount: 1
+
+image:
+  repository: admin-service
+  tag: dev
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3002
+  targetPort: 3002
+
+containerPort: 3002
+
+serviceAccount:
+  create: true
+  automount: true
+  name: admin-service
+
+env:
+  NODE_ENV: development
+  SERVICE_PORT: "3002"
+
+  KAFKA_BROKER: kafka:9092
+  KAFKA_CLIENT_ID: admin-service
+  ENABLE_KAFKA: "true"
+
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+
+  JWT_EXPIRES_IN: 7d
+
+resources: {}
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 3002
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 5
+
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 3002
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 5
+
+vault:
+  enabled: true
+  role: admin-service
+  secretPath: ecommerce/admin-service
+  secretName: admin-service-secret

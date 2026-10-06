@@ -1,0 +1,58 @@
+replicaCount: 1
+
+image:
+  repository: refund-service
+  tag: dev
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3016
+  targetPort: 3016
+
+containerPort: 3016
+
+serviceAccount:
+  create: true
+  automount: true
+  name: refund-service
+
+env:
+  NODE_ENV: development
+
+  PORT: "3016"
+
+  KAFKA_BROKER: kafka:9092
+  KAFKA_CLIENT_ID: refund-service
+  KAFKA_GROUP_ID: refund-service-group
+  ENABLE_KAFKA: "true"
+
+  JWT_EXPIRES_IN: 7d
+
+resources: {}
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 3016
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 5
+
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 3016
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 5
+
+vault:
+  enabled: true
+  role: refund-service
+  secretPath: refund-service
+  secretName: refund-service-secret

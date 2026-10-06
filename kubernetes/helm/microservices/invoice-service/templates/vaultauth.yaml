@@ -1,0 +1,19 @@
+{{- if .Values.vault.enabled }}
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: invoice-service-auth
+  namespace: {{ .Release.Namespace }}
+spec:
+  vaultConnectionRef: vault-connection
+
+  method: kubernetes
+
+  mount: kubernetes
+
+  kubernetes:
+    role: {{ .Values.vault.role }}
+    serviceAccount: {{ include "invoice-service.serviceAccountName" . }}
+    audiences:
+      - vault
+{{- end }}

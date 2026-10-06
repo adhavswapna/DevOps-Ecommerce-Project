@@ -1,0 +1,65 @@
+replicaCount: 1
+
+image:
+  repository: invoice-service
+  tag: dev
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3010
+  targetPort: 3010
+
+containerPort: 3010
+
+serviceAccount:
+  create: true
+  automount: true
+  name: invoice-service
+
+env:
+  NODE_ENV: development
+  PORT: "3010"
+
+  KAFKA_BROKER: kafka:9092
+  KAFKA_CLIENT_ID: invoice-service
+  KAFKA_GROUP_ID: invoice-service-group
+  ENABLE_KAFKA: "true"
+
+  MINIO_ENDPOINT: minio
+  MINIO_PORT: "9000"
+  MINIO_BUCKET: invoices
+  MINIO_USE_SSL: "false"
+
+  ORDER_SERVICE_URL: http://order-service:3006
+  USER_SERVICE_URL: http://user-service:3015
+
+  JWT_EXPIRES_IN: 7d
+
+resources: {}
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 3010
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 5
+  failureThreshold: 5
+
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /health
+    port: 3010
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 5
+
+vault:
+  enabled: true
+  role: invoice-service
+  secretPath: invoice-service
+  secretName: invoice-service-secret
