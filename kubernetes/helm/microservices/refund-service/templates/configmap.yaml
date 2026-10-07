@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: refund-service-config
+  namespace: {{ .Release.Namespace }}
+data:
+  NODE_ENV: {{ .Values.env.NODE_ENV | quote }}
+  PORT: {{ .Values.env.PORT | quote }}
+
+  KAFKA_BROKER: {{ .Values.env.KAFKA_BROKER | quote }}
+  KAFKA_CLIENT_ID: {{ .Values.env.KAFKA_CLIENT_ID | quote }}
+  KAFKA_GROUP_ID: {{ .Values.env.KAFKA_GROUP_ID | quote }}
+  ENABLE_KAFKA: {{ .Values.env.ENABLE_KAFKA | quote }}
+
+  JWT_EXPIRES_IN: {{ .Values.env.JWT_EXPIRES_IN | quote }}

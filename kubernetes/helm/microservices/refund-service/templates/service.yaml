@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: order-service
-  namespace: ecommerce-dev
+  name: refund-service
+  namespace: {{ .Release.Namespace }}
   labels:
-    app: order-service
+    app: refund-service
 spec:
   type: {{ .Values.service.type }}
   selector:
-    app: order-service
+    app: refund-service
   ports:
     - name: http
       port: {{ .Values.service.port }}

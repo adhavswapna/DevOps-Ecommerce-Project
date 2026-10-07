@@ -1,13 +1,19 @@
+{{- if .Values.vault.enabled }}
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
-  name: order-service
-  namespace: ecommerce-dev
+  name: refund-service-auth
+  namespace: {{ .Release.Namespace }}
 spec:
-  method: kubernetes
-  mount: kubernetes
   vaultConnectionRef: vault-connection
 
+  method: kubernetes
+
+  mount: kubernetes
+
   kubernetes:
-    role: order-service
-    serviceAccount: order-service
+    role: {{ .Values.vault.role }}
+    serviceAccount: {{ include "refund-service.serviceAccountName" . }}
+    audiences:
+      - vault
+{{- end }}
