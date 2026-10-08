@@ -1,0 +1,32 @@
+replicaCount: 1
+
+image:
+  repository: shipping-service
+  tag: dev
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3014
+  targetPort: 3014
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  nodeEnv: development
+  kafkaBroker: kafka:9092
+  kafkaClientId: shipping-service
+  kafkaGroupId: shipping-group
+  enableKafka: "true"
+
+  orderServiceUrl: http://order-service:3006
+  userServiceUrl: http://user-service:3015
+
+  frontendUrl: http://frontend:3000
+  jwtExpiresIn: "7d"

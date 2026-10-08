@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipping-service
+  namespace: ecommerce-dev
+  labels:
+    app: shipping-service
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: shipping-service
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP

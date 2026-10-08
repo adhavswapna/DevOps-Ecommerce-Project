@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shipping-service-config
+  namespace: ecommerce-dev
+  labels:
+    app: shipping-service
+
+data:
+  NODE_ENV: {{ .Values.config.nodeEnv | quote }}
+  PORT: {{ .Values.service.targetPort | quote }}
+
+  KAFKA_BROKER: {{ .Values.config.kafkaBroker | quote }}
+  KAFKA_CLIENT_ID: {{ .Values.config.kafkaClientId | quote }}
+  KAFKA_GROUP_ID: {{ .Values.config.kafkaGroupId | quote }}
+  ENABLE_KAFKA: {{ .Values.config.enableKafka | quote }}
+
+  ORDER_SERVICE_URL: {{ .Values.config.orderServiceUrl | quote }}
+  USER_SERVICE_URL: {{ .Values.config.userServiceUrl | quote }}
+
+  FRONTEND_URL: {{ .Values.config.frontendUrl | quote }}
+
+  JWT_EXPIRES_IN: {{ .Values.config.jwtExpiresIn | quote }}
