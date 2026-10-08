@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: analytics-service
+  tag: dev
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3011
+  targetPort: 3011
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  nodeEnv: development
+
+  databaseUrl: postgresql://postgres:postgres@postgres:5432/analytics_db
+
+  kafkaBroker: kafka:9092
+  kafkaClientId: analytics-service
+  enableKafka: "true"

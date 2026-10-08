@@ -1,0 +1,13 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: search-service
+  namespace: ecommerce-dev
+spec:
+  method: kubernetes
+  mount: kubernetes
+  vaultConnectionRef: vault-connection
+
+  kubernetes:
+    role: search-service
+    serviceAccount: search-service
