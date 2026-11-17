@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: product-service-config
-  namespace: ecommerce-dev
+  name: auth-service-config
+  namespace: {{ .Release.Namespace }}
   labels:
-    app: product-service
+    app: auth-service
+
 data:
   NODE_ENV: {{ .Values.config.nodeEnv | quote }}
   PORT: {{ .Values.service.targetPort | quote }}
@@ -13,7 +14,6 @@ data:
   KAFKA_CLIENT_ID: {{ .Values.config.kafkaClientId | quote }}
   ENABLE_KAFKA: {{ .Values.config.enableKafka | quote }}
 
-  REDIS_HOST: {{ .Values.config.redisHost | quote }}
-  REDIS_PORT: {{ .Values.config.redisPort | quote }}
+  REDIS_URL: {{ .Values.config.redisUrl | quote }}
 
   JWT_EXPIRES_IN: {{ .Values.config.jwtExpiresIn | quote }}

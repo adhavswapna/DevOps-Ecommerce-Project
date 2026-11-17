@@ -60,7 +60,7 @@ services:
     restart: unless-stopped
 
   minio:
-    image: minio/minio:latest
+    image: docker.io/pgsty/minio:latest
     container_name: ecommerce-minio
     ports:
       - "9000:9000"   # S3 API

@@ -25,3 +25,20 @@ Selector labels.
 {{- define "auth-service.selectorLabels" -}}
 app: auth-service
 {{- end }}
+
+
+
+
+
+
+
+{{/*
+Service account name.
+*/}}
+{{- define "auth-service.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "auth-service.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}

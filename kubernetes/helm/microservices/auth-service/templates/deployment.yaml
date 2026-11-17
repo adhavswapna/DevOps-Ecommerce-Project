@@ -21,7 +21,7 @@ spec:
     spec:
       enableServiceLinks: false
 
-      serviceAccountName: auth-service
+      serviceAccount: {{ include "auth-service.serviceAccountName" . }}
 
       containers:
         - name: auth-service
