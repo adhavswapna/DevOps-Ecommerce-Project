@@ -5,6 +5,11 @@ image:
   tag: dev
   pullPolicy: IfNotPresent
 
+serviceAccount:
+  create: true
+  automount: true
+  name: shipping-service
+
 service:
   type: ClusterIP
   port: 3014

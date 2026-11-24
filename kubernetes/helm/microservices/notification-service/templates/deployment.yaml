@@ -34,6 +34,10 @@ spec:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
               protocol: TCP
+                    
+            - name: websocket
+              containerPort: {{ .Values.config.websocketPort }}
+              protocol: TCP
 
           envFrom:
             - configMapRef:

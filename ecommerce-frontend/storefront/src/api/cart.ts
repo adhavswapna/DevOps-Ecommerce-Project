@@ -1,14 +1,8 @@
 import { apiClient } from "./apiClient";
 
-/* ======================================================
-   TYPES
-====================================================== */
-
 export interface AddToCartPayload {
   productId: string;
-
   quantity: number;
-
   price: number;
 }
 
@@ -18,167 +12,75 @@ export interface UpdateCartPayload {
 
 export interface WishlistPayload {
   productId: string;
-
   quantity?: number;
-
   price: number;
 }
 
-/* ======================================================
-   GET CART
-====================================================== */
-
+// GET CART
 export const getCart = async () => {
-  const res =
-    await apiClient.get("/cart/");
-
+  const res = await apiClient.get("/");
   return res.data;
 };
 
-/* ======================================================
-   ADD TO CART
-====================================================== */
-
-export const addToCart = async (
-  payload: AddToCartPayload
-) => {
-  const res =
-    await apiClient.post(
-      "/cart/add",
-      payload
-    );
-
+// ADD TO CART
+export const addToCart = async (payload: AddToCartPayload) => {
+  const res = await apiClient.post("/add", payload);
   return res.data;
 };
 
-/* ======================================================
-   UPDATE CART ITEM
-====================================================== */
-
+// UPDATE CART ITEM
 export const updateCartItem = async (
   id: string,
   payload: UpdateCartPayload
 ) => {
-  const res =
-    await apiClient.put(
-      `/cart/update/${id}`,
-      payload
-    );
-
+  const res = await apiClient.put(`/update/${id}`, payload);
   return res.data;
 };
 
-/* ======================================================
-   REMOVE CART ITEM
-====================================================== */
-
-export const removeCartItem = async (
-  id: string
-) => {
-  const res =
-    await apiClient.delete(
-      `/cart/remove/${id}`
-    );
-
+// REMOVE CART ITEM
+export const removeCartItem = async (id: string) => {
+  const res = await apiClient.delete(`/remove/${id}`);
   return res.data;
 };
 
-/* ======================================================
-   CLEAR CART
-====================================================== */
-
+// CLEAR CART
 export const clearCart = async () => {
-  const res =
-    await apiClient.delete(
-      "/cart/clear"
-    );
-
+  const res = await apiClient.delete("/clear");
   return res.data;
 };
 
-/* ======================================================
-   GET WISHLIST
-====================================================== */
-
+// GET WISHLIST
 export const getWishlist = async () => {
-  const res =
-    await apiClient.get(
-      "/cart/wishlist"
-    );
-
+  const res = await apiClient.get("/wishlist");
   return res.data;
 };
 
-/* ======================================================
-   ADD TO WISHLIST
-====================================================== */
-
-export const addToWishlist = async (
-  payload: WishlistPayload
-) => {
-  const res =
-    await apiClient.post(
-      "/cart/wishlist/add",
-      payload
-    );
-
+// ADD TO WISHLIST
+export const addToWishlist = async (payload: WishlistPayload) => {
+  const res = await apiClient.post("/wishlist/add", payload);
   return res.data;
 };
 
-/* ======================================================
-   REMOVE WISHLIST ITEM
-====================================================== */
-
-export const removeWishlistItem = async (
-  id: string
-) => {
-  const res =
-    await apiClient.delete(
-      `/cart/wishlist/remove/${id}`
-    );
-
+// REMOVE WISHLIST ITEM
+export const removeWishlistItem = async (id: string) => {
+  const res = await apiClient.delete(`/wishlist/remove/${id}`);
   return res.data;
 };
 
-/* ======================================================
-   CLEAR WISHLIST
-====================================================== */
-
+// CLEAR WISHLIST
 export const clearWishlist = async () => {
-  const res =
-    await apiClient.delete(
-      "/cart/wishlist/clear"
-    );
-
+  const res = await apiClient.delete("/wishlist/clear");
   return res.data;
 };
 
-/* ======================================================
-   MOVE CART → WISHLIST
-====================================================== */
-
-export const moveToWishlist = async (
-  id: string
-) => {
-  const res =
-    await apiClient.put(
-      `/cart/move-to-wishlist/${id}`
-    );
-
+// MOVE CART TO WISHLIST
+export const moveToWishlist = async (id: string) => {
+  const res = await apiClient.put(`/move-to-wishlist/${id}`);
   return res.data;
 };
 
-/* ======================================================
-   MOVE WISHLIST → CART
-====================================================== */
-
-export const moveToCart = async (
-  id: string
-) => {
-  const res =
-    await apiClient.put(
-      `/cart/wishlist/move-to-cart/${id}`
-    );
-
+// MOVE WISHLIST TO CART
+export const moveToCart = async (id: string) => {
+  const res = await apiClient.put(`/wishlist/move-to-cart/${id}`);
   return res.data;
 };

@@ -1,0 +1,20 @@
+providers:
+  kubernetesGateway:
+    enabled: true
+
+gateway:
+  enabled: true
+  listeners:
+    web:
+      port: 8000
+      protocol: HTTP
+      namespacePolicy:
+        from: All
+
+gatewayClass:
+  enabled: true
+
+service:
+  enabled: true
+  spec:
+    type: ClusterIP

@@ -1,8 +1,10 @@
 import { Kafka } from 'kafkajs';
 
 const kafka = new Kafka({
-  clientId: 'rating-service',
-  brokers: ['localhost:9092'],
+  clientId: process.env.KAFKA_CLIENT_ID || 'rating-service',
+  brokers: [
+    process.env.KAFKA_BROKER || 'kafka:9092',
+  ],
 });
 
 export const producer = kafka.producer();

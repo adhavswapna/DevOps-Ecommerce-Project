@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: email-service
-  tag: local
+  tag: dev
   pullPolicy: Never
 
 serviceAccount:

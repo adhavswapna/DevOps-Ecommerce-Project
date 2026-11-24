@@ -16,6 +16,7 @@ serviceAccount:
   create: true
   automount: true
   name: refund-service
+  annotations: {}
 
 env:
   NODE_ENV: development

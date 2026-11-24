@@ -1,0 +1,34 @@
+replicaCount: 1
+
+image:
+  repository: rating-service
+  tag: dev
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  name: rating-service
+  automount: true
+  annotations: {}
+
+service:
+  type: ClusterIP
+  port: 3008
+  targetPort: 3008
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  nodeEnv: development
+  kafkaBroker: kafka:9092
+  kafkaClientId: rating-service
+  enableKafka: "true"
+  redisHost: redis
+  redisPort: "6379"
+  jwtExpiresIn: "7d"

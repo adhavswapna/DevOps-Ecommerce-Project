@@ -18,8 +18,8 @@ import { useAuthStore } from "@/store/auth.store";
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ??
   (typeof window !== "undefined"
-    ? `${window.location.protocol}//${window.location.hostname}:8081/api`
-    : "http://localhost:8081/api");
+    ? `${window.location.protocol}//${window.location.hostname}:8080`
+    : "http://localhost:8080");
 
 console.log("========================================");
 console.log("API BASE URL:", BASE_URL);
@@ -54,7 +54,6 @@ export const apiClient = createApiClient();
 export const authApi = createApiClient("/auth");
 export const userApi = createApiClient("/users");
 export const productApi = createApiClient("/products");
-export const cartApi = createApiClient("/cart");
 export const orderApi = createApiClient("/orders");
 export const paymentApi = createApiClient("/payments");
 export const ratingApi = createApiClient("/ratings");
@@ -130,7 +129,6 @@ function addInterceptor(client: AxiosInstance) {
   authApi,
   userApi,
   productApi,
-  cartApi,
   orderApi,
   paymentApi,
   ratingApi,

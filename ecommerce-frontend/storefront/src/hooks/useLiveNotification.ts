@@ -46,13 +46,13 @@ export const useLiveNotification = () => {
 
     const API_URL =
       process.env.NEXT_PUBLIC_NOTIFICATION_API_URL ||
-      "http://localhost:3018";
+      "http://localhost:8080";
 
 
 
     const WS_URL =
       process.env.NEXT_PUBLIC_NOTIFICATION_WS_URL ||
-      "ws://localhost:8080";
+      "ws://localhost:8080/ws/notifications";
 
 
 

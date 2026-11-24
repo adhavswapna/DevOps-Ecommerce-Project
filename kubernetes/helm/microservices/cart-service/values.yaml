@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: cart-service
-  tag: local
+  tag: dev
   pullPolicy: IfNotPresent
 
 service:

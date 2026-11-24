@@ -1,0 +1,25 @@
+{{- $routeGroups := chunk 16 .Values.routes }}
+{{- range $index, $routes := $routeGroups }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ecommerce-backend-route-{{ $index }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  parentRefs:
+    - name: {{ $.Values.gateway.name }}
+      namespace: {{ $.Values.gateway.namespace }}
+      sectionName: {{ $.Values.gateway.listener }}
+
+  rules:
+    {{- range $routes }}
+    - matches:
+        - path:
+            type: {{ .pathType | default "PathPrefix" }}
+            value: {{ .path | quote }}
+      backendRefs:
+        - name: {{ .service }}
+          port: {{ .port }}
+    {{- end }}
+{{- end }}

@@ -5,6 +5,12 @@ image:
   tag: dev
   pullPolicy: IfNotPresent
 
+serviceAccount:
+  create: true
+  name: analytics-service
+  automount: true
+  annotations: {}
+
 service:
   type: ClusterIP
   port: 3011

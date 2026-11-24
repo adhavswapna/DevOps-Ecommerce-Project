@@ -17,3 +17,8 @@ spec:
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
       protocol: TCP
+
+    - name: websocket
+      port: {{ .Values.config.websocketPort }}
+      targetPort: {{ .Values.config.websocketPort }}
+      protocol: TCP

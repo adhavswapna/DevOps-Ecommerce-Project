@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ecommerce-gateway
+description: Helm chart for ecommerce API Gateway HTTPRoutes
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

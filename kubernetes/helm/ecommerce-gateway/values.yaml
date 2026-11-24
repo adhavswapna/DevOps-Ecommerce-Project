@@ -1,0 +1,104 @@
+gateway:
+  name: traefik-gateway
+  namespace: traefik
+  listener: web
+
+routes:
+  - path: /auth
+    service: auth-service
+    port: 3001
+
+  - path: /users
+    service: user-service
+    port: 3015
+
+  - path: /products
+    service: product-service
+    port: 3003
+
+  # Cart service routes
+  - path: /
+    pathType: Exact
+    service: cart-service
+    port: 3005
+
+  - path: /add
+    service: cart-service
+    port: 3005
+
+  - path: /update
+    service: cart-service
+    port: 3005
+
+  - path: /remove
+    service: cart-service
+    port: 3005
+
+  - path: /clear
+    service: cart-service
+    port: 3005
+
+  - path: /wishlist
+    service: cart-service
+    port: 3005
+
+  - path: /move-to-wishlist
+    service: cart-service
+    port: 3005
+
+  - path: /orders
+    service: order-service
+    port: 3006
+
+  - path: /payments
+    service: payment-service
+    port: 3007
+
+  - path: /invoices
+    service: invoice-service
+    port: 3010
+
+  - path: /analytics
+    service: analytics-service
+    port: 3011
+
+  - path: /vendors
+    service: vendor-service
+    port: 3012
+
+  - path: /admin
+    service: admin-service
+    port: 3002
+
+  - path: /refunds
+    service: refund-service
+    port: 3016
+
+  - path: /search
+    service: search-service
+    port: 3013
+
+  - path: /shipping
+    service: shipping-service
+    port: 3014
+
+  - path: /email
+    service: email-service
+    port: 3004
+
+  - path: /notifications
+    service: notification-service
+    port: 3018
+
+  - path: /ratings
+    service: rating-service
+    port: 3008
+
+  - path: /inventory
+    service: inventory-service
+    port: 3009
+
+  # Notification WebSocket
+  - path: /ws/notifications
+    service: notification-service
+    port: 8080

@@ -13,8 +13,8 @@ serviceAccount:
 
 service:
   type: ClusterIP
-  port: 3000
-  targetPort: 3000
+  port: 3018
+  targetPort: 3018
 
 resources:
   requests:
